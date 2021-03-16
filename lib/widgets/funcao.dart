@@ -60,28 +60,40 @@ void avisoDelete(BuildContext context, texto, db) {
 }
 
 /*Gera a Lista dos barcos*/
-Widget listaBarcos(BuildContext context) {
+Widget listaBarcos(BuildContext context, filtro) {
   return Container(
     child: StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection("Cadastro_de_barcos")
           .orderBy("Nome")
           .snapshots(),
-      builder: (context, snapshot) {
+      builder: (context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
             child: CircularProgressIndicator(),
           );
         }
+        if (!snapshot.hasData) {
+          return Container(
+            child: Container(
+              child: Text("Não tem registro"),
+            ),
+          );
+        }
         final documents = snapshot.data.docs;
         return ListView.builder(
-          scrollDirection: Axis.vertical,
-          itemCount: documents.length,
-          itemBuilder: (ctx, i) => Container(
-            padding: EdgeInsets.all(8),
-            child: _barcoCard(documents, i, context),
-          ),
-        );
+            scrollDirection: Axis.vertical,
+            itemCount: documents.length,
+            itemBuilder: (ctx, i) {
+              if (documents[i]["Nome"].contains(filtro)) {
+                return Container(
+                  padding: EdgeInsets.all(8),
+                  child: _barcoCard(documents, i, context),
+                );
+              } else {
+                return Container();
+              }
+            });
       },
     ),
   );
@@ -228,19 +240,12 @@ Widget _barcoCard(documents, int i, BuildContext context) {
           ),
         ),
       ),
-      onTap: () {
-        /*
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => InseriForm(documents: documents[i])));*/
-      },
     ),
   );
 }
 
 /*Gera a Lista dos Carga*/
-Widget listaCarga(BuildContext context) {
+Widget listaCarga(BuildContext context, filtro) {
   return Container(
     child: StreamBuilder(
       stream: FirebaseFirestore.instance
@@ -253,14 +258,27 @@ Widget listaCarga(BuildContext context) {
             child: CircularProgressIndicator(),
           );
         }
+        if (!snapshot.hasData) {
+          return Container(
+            child: Container(
+              child: Text("Não tem registro"),
+            ),
+          );
+        }
         final documents = snapshot.data.docs;
         return ListView.builder(
           scrollDirection: Axis.vertical,
           itemCount: documents.length,
-          itemBuilder: (ctx, i) => Container(
-            padding: EdgeInsets.all(8),
-            child: _cargaCard(documents, i, context),
-          ),
+          itemBuilder: (ctx, i) {
+            if (documents[i]["Nome"].contains(filtro)) {
+              return Container(
+                padding: EdgeInsets.all(8),
+                child: _cargaCard(documents, i, context),
+              );
+            } else {
+              return Container();
+            }
+          }
         );
       },
     ),
@@ -468,7 +486,7 @@ String _truefalse(entrada) {
 }
 
 /*Gera a Lista dos Viagem*/
-Widget listaViagem(BuildContext context) {
+Widget listaViagem(BuildContext context, filtro) {
   return Container(
     child: StreamBuilder(
       stream: FirebaseFirestore.instance
@@ -481,14 +499,27 @@ Widget listaViagem(BuildContext context) {
             child: CircularProgressIndicator(),
           );
         }
+        if (!snapshot.hasData) {
+          return Container(
+            child: Container(
+              child: Text("Não tem registro"),
+            ),
+          );
+        }
         final documents = snapshot.data.docs;
         return ListView.builder(
           scrollDirection: Axis.vertical,
           itemCount: documents.length,
-          itemBuilder: (ctx, i) => Container(
-            padding: EdgeInsets.all(8),
-            child: _viagemCard(documents, i, context),
-          ),
+          itemBuilder: (ctx, i) {
+            if (documents[i]["Barco"].contains(filtro)) {
+              return Container(
+                padding: EdgeInsets.all(8),
+                child: _viagemCard(documents, i, context),
+              );
+            } else {
+              return Container();
+            }
+          }
         );
       },
     ),

@@ -17,15 +17,22 @@ class principalForm extends StatefulWidget {
   _principalFormState createState() => _principalFormState();
 }
 
-class _principalFormState extends State<principalForm> {
+class _principalFormState extends State<principalForm>
+    with SingleTickerProviderStateMixin {
+  final _corPrincipal = Color(0xFF006876);
+  final _corSegundaria = Colors.white;
+  TabController _controllerTab;
+  TextEditingController _pesquisa = TextEditingController();
   String _nome;
   String _cargo;
-
-  @override
-  void initState() {
-    super.initState();
-    _peganome();
-  }
+  String _pesquisaBarco = "";
+  String _pesquisaCarga = "";
+  String _pesquisaViagem = "";
+  List<String> _lPesquisa = [
+    "Nome Barco",
+    "Nome Carga",
+    "Nome Barco encarregado "
+  ];
 
   void _peganome() async {
     var snapshot = await FirebaseFirestore.instance
@@ -41,9 +48,14 @@ class _principalFormState extends State<principalForm> {
   }
 
   @override
+  void initState() {
+    _controllerTab = new TabController(length: 3, vsync: this, initialIndex: 1);
+    super.initState();
+    _peganome();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final _corPrincipal = Color(0xFF006876);
-    final _corSegundaria = Colors.white;
     return Scaffold(
       backgroundColor: _corSegundaria,
       drawer: Drawer(
@@ -175,11 +187,8 @@ class _principalFormState extends State<principalForm> {
                   ),
                 ),
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => barcosForm(
-                              /*Email: userCredential.user.email*/)));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => barcosForm()));
                 },
               ),
               ListTile(
@@ -206,11 +215,8 @@ class _principalFormState extends State<principalForm> {
                   ),
                 ),
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              cargaForm(/*Email: userCredential.user.email*/)));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => cargaForm()));
                 },
               ),
               ListTile(
@@ -237,11 +243,8 @@ class _principalFormState extends State<principalForm> {
                   ),
                 ),
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => viagemForm(
-                              /*Email: userCredential.user.email*/)));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => viagemForm()));
                 },
               ),
               Container(
@@ -285,73 +288,106 @@ class _principalFormState extends State<principalForm> {
           ),
         ),
       ),
-      body: DefaultTabController(
-        initialIndex: 1,
-        length: 3,
-        child: NestedScrollView(
-          headerSliverBuilder: (context, value) {
-            return [
-              SliverAppBar(
-                backgroundColor: _corPrincipal,
-                leading: Builder(
-                  builder: (BuildContext context) {
-                    return IconButton(
+      body: NestedScrollView(
+        headerSliverBuilder: (context, value) {
+          return [
+            SliverAppBar(
+              backgroundColor: _corPrincipal,
+              leading: Builder(
+                builder: (BuildContext context) {
+                  return IconButton(
+                    color: _corSegundaria,
+                    icon: const Icon(Icons.menu),
+                    onPressed: () {
+                      Scaffold.of(context).openDrawer();
+                    },
+                    tooltip:
+                        MaterialLocalizations.of(context).openAppDrawerTooltip,
+                  );
+                },
+              ),
+              expandedHeight: 100,
+              title: Container(
+                child: TextFormField(
+                  decoration: InputDecoration(
+                      labelText: 'Pesquisa',
+                      labelStyle: TextStyle(color: _corSegundaria),
+                      suffixIcon: GestureDetector(
+                        child: Icon(
+                          Icons.search,
+                          color: _corSegundaria,
+                        ),
+                        onTap: () {
+                          setState(() {
+                            if(_controllerTab.index == 0) {
+                              _pesquisaBarco = _pesquisa.text;
+                            }
+                            if(_controllerTab.index == 1) {
+                              _pesquisaCarga = _pesquisa.text;
+                            }
+                            if(_controllerTab.index == 2) {
+                              _pesquisaViagem = _pesquisa.text;
+                            }
+
+                          });
+                        },
+                      ),
+                      hintText: _lPesquisa[_controllerTab.index]),
+                  style: TextStyle(color: _corSegundaria),
+                  controller: _pesquisa,
+                ),
+              ),
+              bottom: TabBar(
+                indicatorColor: _corSegundaria,
+                tabs: [
+                  Tab(
+                    icon: Icon(
+                      Icons.directions_boat_rounded,
                       color: _corSegundaria,
-                      icon: const Icon(Icons.menu),
-                      onPressed: () {
-                        Scaffold.of(context).openDrawer();
-                      },
-                      tooltip: MaterialLocalizations.of(context)
-                          .openAppDrawerTooltip,
-                    );
-                  },
-                ),
-                expandedHeight: 100,
-                bottom: TabBar(
-                  indicatorColor: _corSegundaria,
-                  tabs: [
-                    Tab(
-                      icon: Icon(
-                        Icons.directions_boat_rounded,
-                        color: _corSegundaria,
-                      ),
-                      child: Text(
-                        "Barco",
-                        style: TextStyle(color: _corSegundaria),
-                      ),
                     ),
-                    Tab(
-                      icon: Icon(Icons.work, color: _corSegundaria),
-                      child: Text(
-                        "Carga",
-                        style: TextStyle(color: _corSegundaria),
-                      ),
+                    child: Text(
+                      "Barco",
+                      style: TextStyle(color: _corSegundaria),
                     ),
-                    Tab(
-                      icon: Icon(Icons.waves_sharp, color: _corSegundaria),
-                      child: Text(
-                        "Viagem",
-                        style: TextStyle(color: _corSegundaria),
-                      ),
+                  ),
+                  Tab(
+                    icon: Icon(Icons.work, color: _corSegundaria),
+                    child: Text(
+                      "Carga",
+                      style: TextStyle(color: _corSegundaria),
                     ),
-                  ],
-                ),
+                  ),
+                  Tab(
+                    icon: Icon(Icons.waves_sharp, color: _corSegundaria),
+                    child: Text(
+                      "Viagem",
+                      style: TextStyle(color: _corSegundaria),
+                    ),
+                  ),
+                ],
+                onTap: (i) {
+                  setState(() {
+                    _controllerTab;
+                  });
+                },
+                controller: _controllerTab,
               ),
-            ];
-          },
-          body: TabBarView(
-            children: <Widget>[
-              Tab(
-                child: listaBarcos(context),
-              ),
-              Tab(
-                child: listaCarga(context),
-              ),
-              Tab(
-                child: listaViagem(context),
-              ),
-            ],
-          ),
+            ),
+          ];
+        },
+        body: TabBarView(
+          children: <Widget>[
+            Tab(
+              child: listaBarcos(context, _pesquisaBarco),
+            ),
+            Tab(
+              child: listaCarga(context, _pesquisaCarga),
+            ),
+            Tab(
+              child: listaViagem(context, _pesquisaViagem),
+            ),
+          ],
+          controller: _controllerTab,
         ),
       ),
     );
