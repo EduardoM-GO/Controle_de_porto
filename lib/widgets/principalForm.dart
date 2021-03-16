@@ -319,16 +319,15 @@ class _principalFormState extends State<principalForm>
                         ),
                         onTap: () {
                           setState(() {
-                            if(_controllerTab.index == 0) {
+                            if (_controllerTab.index == 0) {
                               _pesquisaBarco = _pesquisa.text;
                             }
-                            if(_controllerTab.index == 1) {
+                            if (_controllerTab.index == 1) {
                               _pesquisaCarga = _pesquisa.text;
                             }
-                            if(_controllerTab.index == 2) {
+                            if (_controllerTab.index == 2) {
                               _pesquisaViagem = _pesquisa.text;
                             }
-
                           });
                         },
                       ),
@@ -368,11 +367,22 @@ class _principalFormState extends State<principalForm>
                 onTap: (i) {
                   setState(() {
                     _controllerTab;
+                    if(_controllerTab.index == 0) {
+                      _pesquisa.text = _pesquisaBarco;
+                    }
+                    if(_controllerTab.index == 1) {
+                      _pesquisa.text = _pesquisaCarga;
+                    }
+                    if(_controllerTab.index == 2) {
+                      _pesquisa.text = _pesquisaViagem;
+                    }
                   });
                 },
                 controller: _controllerTab,
               ),
+
             ),
+
           ];
         },
         body: TabBarView(
