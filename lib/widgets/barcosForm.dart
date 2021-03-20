@@ -21,7 +21,6 @@ class _barcosFromState extends State<barcosForm> {
   var _cargaDisposnivel = [""];
   String _capitao = "";
   String _carga = "";
-  int _validaCapitao;
 
   void initState() {
     super.initState();
@@ -39,15 +38,17 @@ class _barcosFromState extends State<barcosForm> {
     var snapshot = await FirebaseFirestore.instance
         .collection("Usuario")
         .orderBy("Nome")
-        .where("Tipo", isEqualTo: "capitao")
+        .where("Tipo", isEqualTo: "Capitao")
         .snapshots();
 
     snapshot.forEach((doc) async {
       _capitao = doc.docs[0]["Nome"];
       for (int i = 0; i < doc.size; i++) {
         setState(() {
-          if (doc.docs[i]["Nome"] == widget.documents["Capitao"]) {
-            _capitao = widget.documents["Capitao"].toString();
+          if (widget.documents != null) {
+            if (doc.docs[i]["Nome"] == widget.documents["Capitao"]) {
+              _capitao = widget.documents["Capitao"].toString();
+            }
           }
           _capitaoDisposnivel.add(doc.docs[i]["Nome"]);
         });
@@ -66,8 +67,10 @@ class _barcosFromState extends State<barcosForm> {
       _carga = doc.docs[0]["Nome"];
       for (int i = 0; i < doc.size; i++) {
         setState(() {
-          if (doc.docs[i]["Nome"] == widget.documents["Carga"]) {
-            _carga = widget.documents["Carga"].toString();
+          if (widget.documents != null) {
+            if (doc.docs[i]["Nome"] == widget.documents["Carga"]) {
+              _carga = widget.documents["Carga"].toString();
+            }
           }
           _cargaDisposnivel.add(doc.docs[i]["Nome"]);
         });
@@ -86,9 +89,38 @@ class _barcosFromState extends State<barcosForm> {
                 backgroundColor: _corPrincipal,
                 foregroundColor: _corSegundaria,
                 expandedHeight: 150.0,
-                flexibleSpace: const FlexibleSpaceBar(
-                  background: FlutterLogo(),
-                  title: Text('Cadastro de Barcos'),
+                flexibleSpace: Container(
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: <Widget>[
+                      Image(
+                        image: Image.network(
+                            "https://image.freepik.com/fotos-gratis/painel-de-controle-para-navio-com-volante-na-ponte-do-capitao_1153-3642.jpg")
+                            .image,
+                        fit: BoxFit.cover,
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(5.0),
+                        alignment: Alignment.bottomCenter,
+                        decoration: BoxDecoration(
+                          //degrade na imagem
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: <Color>[
+                              Colors.black.withAlpha(0),
+                              Colors.black12,
+                              Colors.black45
+                            ],
+                          ),
+                        ),
+                        child: Text(
+                          "Cadastro de Barcos",
+                          style: TextStyle(color: Colors.white,fontSize:  30.0),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 actions: <Widget>[
                   IconButton(

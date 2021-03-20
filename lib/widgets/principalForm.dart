@@ -75,7 +75,7 @@ class _principalFormState extends State<principalForm>
                           shape: BoxShape.circle,
                           image: DecorationImage(
                               image: Image.network(
-                                      "https://d17lbu6bbzbdc8.cloudfront.net/wp-content/uploads/2020/06/10213859/solo-leveling-696x424.jpg")
+                                      "https://www.infoescola.com/wp-content/uploads/2012/02/capit%C3%A3o-de-navio_258334898.jpg")
                                   .image,
                               fit: BoxFit.cover),
                         ),
@@ -248,7 +248,7 @@ class _principalFormState extends State<principalForm>
                 },
               ),
               Container(
-                height: 275,
+                height:  MediaQuery.of(context).size.height*0.35,
               ),
               Container(
                 child: ListTile(
@@ -330,6 +330,7 @@ class _principalFormState extends State<principalForm>
                             }
                           });
                         },
+
                       ),
                       hintText: _lPesquisa[_controllerTab.index]),
                   style: TextStyle(color: _corSegundaria),
@@ -381,6 +382,7 @@ class _principalFormState extends State<principalForm>
                 controller: _controllerTab,
               ),
 
+
             ),
 
           ];
@@ -398,6 +400,7 @@ class _principalFormState extends State<principalForm>
             ),
           ],
           controller: _controllerTab,
+
         ),
       ),
     );

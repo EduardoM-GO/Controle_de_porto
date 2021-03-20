@@ -50,11 +50,15 @@ class _viagemFormSate extends State<viagemForm> {
 
     snapshot.forEach((doc) async {
       _barco = doc.docs[0]["Nome"];
+      print(doc.docs[0]["Nome"]);
       for (int i = 0; i < doc.size; i++) {
-        setState(() {
+        if (widget.documents != null) {
           if (doc.docs[i]["Nome"] == widget.documents["Barco"]) {
             _barco = widget.documents["Barco"].toString();
           }
+        }
+        setState(() {
+          print(doc.docs[i]["Nome"]);
           _barcoDisposnivel.add(doc.docs[i]["Nome"]);
         });
       }
@@ -71,9 +75,38 @@ class _viagemFormSate extends State<viagemForm> {
             SliverAppBar(
                 backgroundColor: _corPrincipal,
                 expandedHeight: 150.0,
-                flexibleSpace: const FlexibleSpaceBar(
-                  background: FlutterLogo(),
-                  title: Text('Cadastro de Viagem'),
+                flexibleSpace: Container(
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: <Widget>[
+                      Image(
+                        image: Image.network(
+                            "https://image.freepik.com/fotos-gratis/navio-porta-contentores-que-chega-no-porto-comercial_35024-895.jpg")
+                            .image,
+                        fit: BoxFit.cover,
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(5.0),
+                        alignment: Alignment.bottomCenter,
+                        decoration: BoxDecoration(
+                          //degrade na imagem
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: <Color>[
+                              Colors.black.withAlpha(0),
+                              Colors.black12,
+                              Colors.black45
+                            ],
+                          ),
+                        ),
+                        child: Text(
+                          "Cadastro de Viagem",
+                          style: TextStyle(color: Colors.white, fontSize: 30.0),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 actions: <Widget>[
                   IconButton(

@@ -44,9 +44,39 @@ class _cargaFormState extends State<cargaForm> {
             SliverAppBar(
                 backgroundColor: _corPrincipal,
                 expandedHeight: 150.0,
-                flexibleSpace: const FlexibleSpaceBar(
-                  background: FlutterLogo(),
-                  title: Text('Cadastro de Carga'),
+                flexibleSpace: Container(
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: <Widget>[
+                      Image(
+                        image: Image.network(
+                            "https://image.freepik.com/fotos-gratis/vista-aerea-do-navio-de-carga-do-conteiner-no-mar_335224-738.jpg")
+                            .image,
+                        fit: BoxFit.cover,
+                        semanticLabel: "Teste",
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(5.0),
+                        alignment: Alignment.bottomCenter,
+                        decoration: BoxDecoration(
+                          //degrade na imagem
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: <Color>[
+                              Colors.black.withAlpha(0),
+                              Colors.black12,
+                              Colors.black45
+                            ],
+                          ),
+                        ),
+                        child: Text(
+                          "Cadastro de Carga",
+                          style: TextStyle(color: Colors.white, fontSize: 30.0),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 actions: <Widget>[
                   IconButton(

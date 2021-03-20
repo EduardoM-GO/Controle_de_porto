@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:controle_barcos/widgets/funcao.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:translator/translator.dart';
 
@@ -57,9 +58,39 @@ class _usuarriosFormState extends State<usuariosForm> {
             SliverAppBar(
                 backgroundColor: _corPrincipal,
                 expandedHeight: 150.0,
-                flexibleSpace: const FlexibleSpaceBar(
-                  background: FlutterLogo(),
-                  title: Text('Cadastro de Usuário'),
+                flexibleSpace: Container(
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: <Widget>[
+                      Image(
+
+                        image: Image.network(
+                                "https://t4.ftcdn.net/jpg/02/29/83/87/240_F_229838793_rJq0GCzlp2DfJyCwLHZBgZMI7zt6ZBuG.jpg")
+                            .image,
+                        fit: BoxFit.cover,
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(5.0),
+                        alignment: Alignment.bottomCenter,
+                        decoration: BoxDecoration(
+                          //degrade na imagem
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: <Color>[
+                              Colors.black.withAlpha(0),
+                              Colors.black12,
+                              Colors.black45
+                            ],
+                          ),
+                        ),
+                        child: Text(
+                          "Cadastro de Usuário",
+                          style: TextStyle(color: Colors.white, fontSize: 30.0),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 actions: <Widget>[
                   IconButton(
@@ -118,9 +149,10 @@ class _usuarriosFormState extends State<usuariosForm> {
                         height: 120.0,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
+                          border: Border.all(color: _corPrincipal,width: 50),
                           image: DecorationImage(
                               image: Image.network(
-                                      "https://d17lbu6bbzbdc8.cloudfront.net/wp-content/uploads/2020/06/10213859/solo-leveling-696x424.jpg")
+                                      "https://www.infoescola.com/wp-content/uploads/2012/02/capit%C3%A3o-de-navio_258334898.jpg")
                                   .image,
                               fit: BoxFit.cover),
                         ),

@@ -22,107 +22,132 @@ class _loginFormState extends State<loginForm> {
     final _corSegundaria = Colors.white;
     return Container(
       color: _corPrincipal,
-      child: Column(
+      child: Stack(
+        fit: StackFit.expand,
         children: <Widget>[
-          Container(
-            height: 200,
-          ),
-          Text(
-            'Controle de Porto',
-            style: TextStyle(
-                color: _corSegundaria,
-                fontSize: 40,
-                fontStyle: FontStyle.italic),
+          Image(
+            image: Image.network(
+                    "https://image.freepik.com/fotos-gratis/terminal-de-contentores-cais-transporte_1205-1194.jpg")
+                .image,
+            fit: BoxFit.cover,
           ),
           Container(
-            height: 50,
-          ),
-          Center(
-            child: Card(
-              color: _corSegundaria,
-              margin: EdgeInsets.all(20),
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Form(
-                    child: Column(
-                      children: <Widget>[
-                        TextFormField(
-                          decoration: InputDecoration(
-                            labelText: 'E-Mail',
-                            labelStyle: TextStyle(color: _corPrincipal),
-                          ),
-                          controller: _email,
-                          style: TextStyle(color: _corPrincipal),
-                          focusNode: _emailFocus,
-                        ),
-                        TextFormField(
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            labelText: 'Senha',
-                            labelStyle: TextStyle(color: _corPrincipal),
-                          ),
-                          controller: _senha,
-                          style: TextStyle(
-                              color: _corPrincipal,
-                              decorationColor: _corPrincipal),
-                          focusNode: _senhaFocus,
-                        ),
-                        SizedBox(height: 12),
-                        ElevatedButton(
-                          child: Container(
-                            width: 70,
-                            child: Row(
-                              children: <Widget>[
-                                Expanded(
-                                  child: Icon(Icons.login),
+            padding: EdgeInsets.all(5.0),
+            alignment: Alignment.bottomCenter,
+            decoration: BoxDecoration(
+              //degrade na imagem
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: <Color>[
+                  Colors.black45,
+                  Colors.black45,
+                  Colors.black45,
+
+                ],
+              ),
+            ),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  height: 200,
+                ),
+                Text(
+                  'Controle de Porto',
+                  style: TextStyle(
+                      color: _corSegundaria,
+                      fontSize: 40,
+                      fontStyle: FontStyle.italic),
+                ),
+                Container(
+                  height: 50,
+                ),
+                Center(
+                  child: Card(
+                    color: _corSegundaria,
+                    margin: EdgeInsets.all(20),
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Form(
+                          child: Column(
+                            children: <Widget>[
+                              TextFormField(
+                                decoration: InputDecoration(
+                                  labelText: 'E-Mail',
+                                  labelStyle: TextStyle(color: _corPrincipal),
                                 ),
-                                Container(
-                                  width: 5,
+                                controller: _email,
+                                style: TextStyle(color: _corPrincipal),
+                                focusNode: _emailFocus,
+                              ),
+                              TextFormField(
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  labelText: 'Senha',
+                                  labelStyle: TextStyle(color: _corPrincipal),
                                 ),
-                                Expanded(
-                                  flex: 2,
-                                  child: Text(
-                                    'Entrar',
-                                    style: TextStyle(color: _corSegundaria),
+                                controller: _senha,
+                                style: TextStyle(
+                                    color: _corPrincipal,
+                                    decorationColor: _corPrincipal),
+                                focusNode: _senhaFocus,
+                              ),
+                              SizedBox(height: 12),
+                              ElevatedButton(
+                                child: Container(
+                                  width: 70,
+                                  child: Row(
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: Icon(Icons.login),
+                                      ),
+                                      Container(
+                                        width: 5,
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: Text(
+                                          'Entrar',
+                                          style:
+                                              TextStyle(color: _corSegundaria),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                          onPressed: () async {
-                            int i = 0;
+                                onPressed: () async {
+                                  int i = 0;
 
-                            try {
-                              await FirebaseAuth.instance
-                                  .signInWithEmailAndPassword(
-                                      email: _email.text,
-                                      password: _senha.text);
-                            } on FirebaseAuthException catch (e) {
-                              translator.translate(e.code, to: 'pt').then(
-                                  (result) =>
-                                      aviso(context, 'Erro', result.text));
-                              i = 1;
-                            }
-
-                            if (i == 0) {
-                              await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          principalForm(_email.text)));
-                              await FirebaseAuth.instance.signOut();
-                              _email.clear();
-                              _senha.clear();
-                            }
-                            _emailFocus.requestFocus();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: _corPrincipal, // background
-                            onPrimary: _corSegundaria, // foreground
-                          ),
-                        ),
-                        /*TextButton(
+                                  try {
+                                    await FirebaseAuth.instance
+                                        .signInWithEmailAndPassword(
+                                            email: _email.text,
+                                            password: _senha.text);
+                                  } on FirebaseAuthException catch (e) {
+                                    translator.translate(e.code, to: 'pt').then(
+                                        (result) => aviso(
+                                            context, 'Erro', result.text));
+                                    i = 1;
+                                  }
+                                  if (i == 0) {
+                                    await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                principalForm(_email.text)));
+                                    await FirebaseAuth.instance.signOut();
+                                    _email.clear();
+                                    _senha.clear();
+                                  }
+                                  _emailFocus.requestFocus();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  primary: _corPrincipal, // background
+                                  onPrimary: _corSegundaria, // foreground
+                                ),
+                              ),
+                              /*TextButton(
                     child: Text('Criar uma nova conta?'),
                     onPressed: () async {
                       int i = 0;
@@ -144,11 +169,14 @@ class _loginFormState extends State<loginForm> {
                       primary: _corPrincipal,
                     ),
                   ),*/
-                      ],
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              ),
+              ],
             ),
           ),
         ],
